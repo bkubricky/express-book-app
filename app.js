@@ -20,7 +20,9 @@ function deleteBookByIsbn(isbn) {
   }
   return false;
 }
-
+app.get("/", (req, res) => {
+  res.redirect("/books");
+});
 // Route to display all books
 app.get("/books", (req, res) => {
   res.render("book-list", { books });
