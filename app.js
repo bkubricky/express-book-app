@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-const books = require("./book-data").books;
+const mongoose = require("mongoose");
+const Book = require("./models/Book");
+require("dotenv").config();
 
 // Set the view engine to pug
 app.set("views", path.join(__dirname, "views"));
@@ -10,6 +12,7 @@ app.set("view engine", "pug");
 // Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+mongoose.connect(`${process.env.MONGODB_URI}`);
 
 // Helper function to remove a book
 function deleteBookByIsbn(isbn) {
@@ -24,7 +27,8 @@ app.get("/", (req, res) => {
   res.redirect("/books");
 });
 // Route to display all books
-app.get("/books", (req, res) => {
+app.get("/books", async (req, res) => {
+  const books = await Book.find();
   res.render("book-list", { books });
 });
 
@@ -85,22 +89,10 @@ app.get("/books/:isbn", (req, res) => {
   res.render("book-detail", { book });
 });
 
-app.post("/books", (req, res) => {
-  const newBook = {
-    isbn: req.body.isbn,
-    title: req.body.title,
-    subtitle: req.body.subtitle,
-    author: req.body.author,
-    published: req.body.published,
-    publisher: req.body.publisher,
-    pages: parseInt(req.body.pages),
-    description: req.body.description,
-    website: req.body.website,
-  };
+app.post("/books", async (req, res) => {
+  await Book.create(req.body);
 
-  books.push(newBook);
-  // res.send("Book added successfully!");
-  res.render("book-list", { books });
+  res.redirect("/books");
 });
 
 // Start the server
