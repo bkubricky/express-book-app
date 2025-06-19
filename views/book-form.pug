@@ -1,47 +1,71 @@
-//- views/bookForm.pug
 doctype html
 html
   head
     title Add a New Book
-  body
-    h1 Add a New Book
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css")
 
-    form(action="/books" method="POST")
-      div
-        label(for="isbn") ISBN:
-        input(type="text" name="isbn" id="isbn" required)
+    style.
+      .shadow-neumorph {
+        box-shadow: 8px 8px 16px #c5c5c5, -8px -8px 16px #ffffff;
+      }
+      .shadow-neumorph-inset {
+        box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
+      }
 
-      div
-        label(for="title") Title:
-        input(type="text" name="title" id="title" required)
+  body(class="bg-gray-200 min-h-screen text-gray-800 font-sans")
+    main(class="w-[90vw] max-w-screen-md mx-auto p-8 shadow-neumorph rounded-xl bg-gray-200")
+      h1(class="text-3xl font-bold mb-6 text-center") Add a New Book
 
-      div
-        label(for="subtitle") Subtitle:
-        input(type="text" name="subtitle" id="subtitle")
+      form(action="/books" method="POST" class="space-y-4")
+        // ISBN
+        div(class="flex flex-col")
+          label(for="isbn" class="mb-1 font-semibold") ISBN:
+          input(type="text" name="isbn" id="isbn" required class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        label(for="author") Author:
-        input(type="text" name="author" id="author" required)
+        // Title
+        div(class="flex flex-col")
+          label(for="title" class="mb-1 font-semibold") Title:
+          input(type="text" name="title" id="title" required class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        label(for="published") Published:
-        input(type="date" name="published" id="published")
+        // Subtitle
+        div(class="flex flex-col")
+          label(for="subtitle" class="mb-1 font-semibold") Subtitle:
+          input(type="text" name="subtitle" id="subtitle" class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        label(for="publisher") Publisher:
-        input(type="text" name="publisher" id="publisher")
+        // Author
+        div(class="flex flex-col")
+          label(for="author" class="mb-1 font-semibold") Author:
+          input(type="text" name="author" id="author" required class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        label(for="pages") Pages:
-        input(type="number" name="pages" id="pages" min="1")
+        // Published
+        div(class="flex flex-col")
+          label(for="published" class="mb-1 font-semibold") Published:
+          input(type="date" name="published" id="published" class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        label(for="description") Description:
-        textarea(name="description" id="description")
+        // Publisher
+        div(class="flex flex-col")
+          label(for="publisher" class="mb-1 font-semibold") Publisher:
+          input(type="text" name="publisher" id="publisher" class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        label(for="website") Website:
-        input(type="url" name="website" id="website")
+        // Pages
+        div(class="flex flex-col")
+          label(for="pages" class="mb-1 font-semibold") Pages:
+          input(type="number" name="pages" id="pages" min="1" class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
 
-      div
-        button(type="submit") Submit Book
+        // Description
+        div(class="flex flex-col")
+          label(for="description" class="mb-1 font-semibold") Description:
+          textarea(name="description" id="description" rows="4" class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset resize-none focus:outline-none focus:ring-2 focus:ring-blue-400")
+
+        // Website
+        div(class="flex flex-col")
+          label(for="website" class="mb-1 font-semibold") Website:
+          input(type="url" name="website" id="website" class="px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph-inset focus:outline-none focus:ring-2 focus:ring-blue-400")
+
+        // Submit
+        div(class="text-center mt-4")
+          button(type="submit" class="px-6 py-2 rounded-xl bg-blue-500 text-white shadow-md hover:bg-blue-600 transition") Submit Book
+        
+        div(class="text-center")
+        a(href="/books" class="inline-block mt-4 px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph hover:shadow-neumorph-inset transition text-gray-700 no-underline")
+          | &larr; Back to all books

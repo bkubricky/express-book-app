@@ -15,14 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect(`${process.env.MONGODB_URI}`);
 
 // Helper function to remove a book
-function deleteBookByIsbn(isbn) {
-  const index = books.findIndex((book) => book.isbn === isbn);
-  if (index !== -1) {
-    books.splice(index, 1);
-    return true;
-  }
-  return false;
-}
+
 app.get("/", (req, res) => {
   res.redirect("/books");
 });
@@ -33,60 +26,36 @@ app.get("/books", async (req, res) => {
 });
 
 app.get("/books/new", (req, res) => {
-  res.render("book-form", { books });
+  res.render("book-form");
 });
-app.post("/books/:isbn/delete", (req, res) => {
+app.post("/books/:isbn/delete", async (req, res) => {
   const { isbn } = req.params;
-  const deleted = deleteBookByIsbn(isbn);
-  if (deleted) {
-    res.redirect("/books");
-  } else {
-    res.status(404).send("Book not found");
-  }
+  await Book.deleteOne({ isbn: isbn });
+  res.redirect("/books");
 });
-app.get("/books/:isbn/edit", (req, res) => {
+app.get("/books/:isbn/edit", async (req, res) => {
   const { isbn } = req.params;
-  const book = books.find((b) => b.isbn === isbn);
+  const book = await Book.find({ isbn: isbn });
+  console.log(book);
+
+  // const book = books.find((b) => b.isbn === isbn);
 
   if (!book) {
     return res.status(404).send("Book not found");
   }
 
-  res.render("book-edit", { book });
+  res.render("book-edit", { book: book[0] });
 });
-app.post("/books/:isbn/update", (req, res) => {
+app.post("/books/:isbn/update", async (req, res) => {
   const { isbn } = req.params;
-  const index = books.findIndex((b) => b.isbn === isbn);
-  console.log(`index = ${index}`);
-
-  if (index === -1) {
-    return res.status(404).send("Book not found");
-  }
-
-  books[index] = {
-    isbn: req.body.isbn,
-    title: req.body.title,
-    subtitle: req.body.subtitle,
-    author: req.body.author,
-    published: req.body.published,
-    publisher: req.body.publisher,
-    pages: parseInt(req.body.pages),
-    description: req.body.description,
-    website: req.body.website,
-  };
-
+  await Book.findOneAndUpdate({ isbn: isbn }, req.body);
   res.redirect(`/books`);
 });
 // Route to display a single book by ISBN
-app.get("/books/:isbn", (req, res) => {
+app.get("/books/:isbn", async (req, res) => {
   const isbn = req.params.isbn;
-  const book = books.find((b) => b.isbn === isbn);
-
-  if (!book) {
-    return res.status(404).send("Book not found");
-  }
-
-  res.render("book-detail", { book });
+  const book = await Book.find({ isbn: isbn });
+  res.render("book-detail", { book: book[0] });
 });
 
 app.post("/books", async (req, res) => {

@@ -2,15 +2,35 @@ doctype html
 html
   head
     title= book.title
-  body
-    h1= book.title
-    h2 by #{book.author}
-    p
-      | ISBN: #{book.isbn}
-    p
-      | Published by #{book.publisher} on #{new Date(book.published).toDateString()}
-    p= book.description
-    p
-      a(href=book.website target="_blank") Visit Website
-    br
-    a(href="/books") ← Back to all books
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css")
+
+    style.
+      .shadow-neumorph {
+        box-shadow: 8px 8px 16px #c5c5c5, -8px -8px 16px #ffffff;
+      }
+      .shadow-neumorph-inset {
+        box-shadow: inset 6px 6px 12px #c5c5c5, inset -6px -6px 12px #ffffff;
+      }
+
+  body(class="bg-gray-200 min-h-screen text-gray-800 font-sans")
+    main(class="w-[90vw] max-w-screen-md mx-auto p-8 shadow-neumorph rounded-xl bg-gray-200")
+      h1(class="text-4xl font-bold mb-2 text-center")= book.title
+      h2(class="text-xl text-gray-600 mb-4 text-center") by #{book.author}
+
+      p(class="mb-2")
+        strong ISBN: 
+        | #{book.isbn}
+
+      p(class="mb-2")
+        strong Published by 
+        | #{book.publisher} on #{new Date(book.published).toDateString()}
+
+      p(class="mb-4 whitespace-pre-wrap")= book.description
+
+      if book.website
+        p(class="mb-4")
+          a(href=book.website target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline") Visit Website
+
+      div(class="text-center")
+        a(href="/books" class="inline-block mt-4 px-4 py-2 rounded-xl bg-gray-200 shadow-neumorph hover:shadow-neumorph-inset transition text-gray-700 no-underline")
+          | &larr; Back to all books
