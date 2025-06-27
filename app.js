@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect(`${process.env.MONGODB_URI}`);
 
-console.log(process.env.MONGO_URI);
+console.log(`process.env.MONGO_URI ${process.env.MONGODB_URI}`);
 
 // Helper function to remove a book
 
